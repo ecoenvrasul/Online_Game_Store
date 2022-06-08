@@ -100,11 +100,11 @@ class NewsController extends Controller
         return ResponseController::success();
     }
     public function delete(Request $request){
-        // try {
-        //     $this->authorize('delete', News::class);
-        // } catch (\Throwable $th) {
-        //     return ResponseController::error('You cannot delete any News here');
-        // }
+        try {
+            $this->authorize('delete', News::class);
+        } catch (\Throwable $th) {
+            return ResponseController::error('You cannot delete any News here');
+        }
         $news = News::find($request->id);
         if(!$news){
             return ResponseController::error('No value!');

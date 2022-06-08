@@ -153,6 +153,19 @@ class AuthController extends Controller
         $collection['users'] = $users;
         return ResponseController::data($collection);
     }
+    public function showEmployee(){
+        $employees = Employee::paginate(10);
+        $collection = [];
+        foreach($employees as $employee){
+                $collection[] = [
+                "employee_id" => $employee->id,
+                "employee_name" => $employee->name,
+                "employee_role" => $employee->role,
+                "employee_phone" => $employee->phone,
+            ];
+        }
+        return $collection;
+    }
 }
 
 

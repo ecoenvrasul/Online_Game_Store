@@ -24,6 +24,7 @@ return new class extends Migration
             $table->double('price');
             $table->double('discount')->nullable();
             $table->double('current_price')->nullable();
+            $table->bigInteger('purchased_games')->nullable();
             $table->mediumText('about');
             $table->json('minimal_system');
             $table->json('recommend_system');

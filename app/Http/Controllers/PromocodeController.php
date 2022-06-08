@@ -34,7 +34,7 @@ class PromocodeController extends Controller
             "user_id" => $user->id,
             "count" => $count
         ]);
-        return "done";
+        return ResponseController::success("The promocode is established", 200);
     }
     public function showAllPromocodes(){
         try {

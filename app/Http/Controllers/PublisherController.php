@@ -15,7 +15,7 @@ class PublisherController extends Controller
         try {
             $this->authorize('create', Product::class);
         } catch (\Throwable $th) {
-            return ResponseController::error('You are not allowed!');
+            return ResponseController::error('You are not allowed to create a Publisher!');
         }
         $validator = Validator::make($request->all(), [
             "name" => 'required|unique:publishers,name',

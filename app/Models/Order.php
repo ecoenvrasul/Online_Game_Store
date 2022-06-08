@@ -17,6 +17,9 @@ class Order extends Model
     public function product(){                  //order table
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+    // public function products(){
+    //     return $this->hasMany(Product::class);
+    // }
 
     // bu OrderObserverda pricelarni jadvalga created qilib beradi
     // $basket = $order->basket - it is showm in such way

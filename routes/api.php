@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::put('/employee/update', [AuthController::class, 'updateEmployee']);
     Route::get('/show/user', [AuthController::class, 'showUser']);
     Route::get('/show/ordered/users', [AuthController::class, 'orderByPoint']);
+    Route::get('/show/employee', [AuthController::class, 'showEmployee']);
 
     Route::post('/product/create', [ProductController::class, 'create']);
     Route::get('/product/all', [ProductController::class, 'viewAll']);
@@ -103,7 +104,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/basket/price/{basket}', [BasketController::class, 'price']);
     Route::get('/basket/user/{basket}', [BasketController::class, 'basketUser']);
     Route::get('/get/basket/{user}', [BasketController::class, 'userBasket']);
-    Route::get('/basket/payment/{id}', [BasketController::class, 'payment']);
+    Route::get('/basket/payment/promocode', [BasketController::class, 'payment']);
 
     Route::post('/favourite/create', [FavouriteController::class, 'create']);
     Route::delete('/favourite/delete', [FavouriteController::class, 'delete']);

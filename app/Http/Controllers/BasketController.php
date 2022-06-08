@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Basket;
 use App\Models\Product;
+use App\Models\Promocode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\ResponseController;
@@ -103,14 +104,46 @@ class BasketController extends Controller
         $collection['orders'] = $basket->orders;
         return ResponseController::data($collection);
     }
-    public function payment($id, Request $request){
-        $basket = Basket::find($id);
+    public function payment(Request $request){
+        $basket = Basket::find($request->id);
         $orders = $basket->orders;
-        // $user = $basket->user();
-        return $user;
+        $user = $request->user();
+        // $product = $orders->product;
+        try {
+            if(!is_null($request->promocode)){
+                $promocode = Promocode::where('promocode', $request->promocode)->first();
+                $decreaseBy = 1;
+                $discount = $promocode->discount;
+                $current_price = $basket->price - ($basket->price*$discount/100);
+                $promocode->decrement('count', $decreaseBy);
+                if($promocode->count == 0){
+                    $promocode->delete();
+                }
+            }
+        } catch (\Throwable $th) {
+            return ResponseController::error('The promocode is expired or is not exists');
+        }
+        if($basket->status == "unpurchased"){
+            $count = $basket->orders()->count();
+            $point = $user->point + $count*5;
+            $user->update([
+                "bought_game_number" => $user->bought_game_number + $count,
+                "point" => $point,
+            ]);
+            $basket->update([
+                "status" => "purchased",
+                "discount" => $discount ?? 0,
+                "current_price" => $current_price ?? 0,
+            ]);
+            foreach($orders as $order){
+                $product = $order->product;
+                $product->update([
+                    "purchased_games" => $product->purchased_games +1,
+                ]);
+            }
+        }else{
+            return "The payment is done";
+        }
     }
 }
-
-// payment method has not been done only
-
 
