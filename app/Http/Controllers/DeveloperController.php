@@ -104,14 +104,13 @@ class DeveloperController extends Controller
         }
         $developer = Developer::onlyTrashed()
         ->find($request->id);
-        $product = Product::withTrashed()
-        ->where('developer_id', $developer->id)
-        ->first();
         if(!$developer){
             return ResponseController::error('There is no deleted Developer', 404);
         }elseif($developer->trashed()){
+            Product::withTrashed()
+            ->where('developer_id', $developer->id)
+            ->delete();
             $developer->restore();
-            $product->restore();
             return ResponseController::success('Developer and its products are successfully restored');
         }
     }

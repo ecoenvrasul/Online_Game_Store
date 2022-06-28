@@ -16,6 +16,9 @@ class BasketController extends Controller
 {
     public function show(Request $request){
         $baskets = Basket::paginate(15);
+        if(count($baskets) == 0){
+            return ResponseController::error('You do not have nay Basket yet!. Please, create one!');
+        }
         $collection = [
             "last_page" => $baskets->lastPage(),
             "baskets" => [],
@@ -44,6 +47,9 @@ class BasketController extends Controller
     public function basketOrders(Basket $basket){
         $orders = Order::where('basket_id', $basket->id)
         ->paginate(20);
+        if(count($orders) == 0){
+            return ResponseController::error('There is no Order in the Basket!');
+        }
         $collection = [
             'last_page' => $orders->lastPage(),
             "orders" => [],
@@ -77,11 +83,6 @@ class BasketController extends Controller
         return ResponseController::error('Basket and Orders belongs to the Basket have been destroyed!');
     }
     public function deleteSingleOrder(Request $request, Basket $basket) {
-        try {
-            $this->authorize('delete', Basket::class);
-        } catch (\Throwable $th) {
-            return ResponseController::error('You are not allowed to delete any order here.');
-        }
         $order = Order::where('basket_id', $basket->id)->first();
         $order->find($request->order_id)->delete();
         return ResponseController::success();
@@ -108,7 +109,6 @@ class BasketController extends Controller
         $basket = Basket::find($request->id);
         $orders = $basket->orders;
         $user = $request->user();
-        // $product = $orders->product;
         try {
             if(!is_null($request->promocode)){
                 $promocode = Promocode::where('promocode', $request->promocode)->first();

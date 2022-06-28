@@ -68,10 +68,21 @@ class OrderObserver
         $basket = $order->basket;
         $basket_count = $basket->count-1;
 
-
+        /* This updates PRICE, COUNT, CURRENT_PRICE column when a User deletes
+        a single Order from the basket */
         $basket->update([
-            'count' => $basket_count
+            'count' => $basket_count,
+            "price" => $basket->price-$order->price,
+            "current_price" => $basket->current_price-$order->current_price,
         ]);
+
+        /* This updated DISCOUNT column when there is no product in Basket
+        so that the value of the DISCOUNT column becomes zero, */
+        if($basket->count == 0) {
+            $basket->update([
+                "discount" => 0,
+            ]);
+        }
 
 
     }

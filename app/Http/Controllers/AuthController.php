@@ -39,6 +39,7 @@ class AuthController extends Controller
     }
     public function login(Request $request){
         $user = User::where('email', $request->email)->first();
+        return $user;
         if(!$user or !Hash::check($request->password, $user->password)){
             return ResponseController::error('Password or email is incorrect');
         }
@@ -125,6 +126,9 @@ class AuthController extends Controller
         }
 
         $users = User::paginate(10);
+        if(count($users) == 0){
+            return ResponseController::error('There is no user!');
+        }
         $final = [];
         $collection = [
             "last_page" => $users->lastPage(),
@@ -161,6 +165,7 @@ class AuthController extends Controller
                 "employee_id" => $employee->id,
                 "employee_name" => $employee->name,
                 "employee_role" => $employee->role,
+                "employee_password" => $employee->password,
                 "employee_phone" => $employee->phone,
             ];
         }

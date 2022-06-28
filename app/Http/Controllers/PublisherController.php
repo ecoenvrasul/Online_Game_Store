@@ -54,13 +54,13 @@ class PublisherController extends Controller
         return ResponseController::success('Publisher and related product have been successfully deleted');
     }
     public function update(Request $request){
-        $validation  = Validator::make($request->all(), [
-            "name" => 'required|exists:publishers,name',
+        $validator  = Validator::make($request->all(), [
+            "name" => 'required',
             "image" => 'required|url',
             "logo_img" => 'required|url',
             "description" => 'nullable|string'
         ]);
-        if($validation->fails()){
+        if($validator->fails()){
             return ResponseController::error($validator->errors()->first());
         }
         $update = Publisher::where('id', $request->id)->first();

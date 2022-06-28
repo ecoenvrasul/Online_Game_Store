@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\News;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class NewsPolicy
@@ -42,7 +43,7 @@ class NewsPolicy
     public function create()
     {
         return Auth::user()->role == 'admin';
-     }
+    }
 
     /**
      * Determine whether the user can update the model.

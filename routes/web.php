@@ -14,8 +14,9 @@ use App\Http\Controllers\ResponseController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/migrate/fresh', function(){
+    Artisan::call('migrate:fresh');
+    return "Ok";
 });
 
 

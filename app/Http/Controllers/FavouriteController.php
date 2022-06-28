@@ -53,7 +53,7 @@ class FavouriteController extends Controller
         foreach($favourites as $favourite){
             $product = $favourite->product()->first();
             $collection["favourites"][] = [
-                "product_id" => $product->id,
+                // "product_id" => $product->id,
                 "product_title" => $product->title,
                 "price" => $product->price,
                 "discount" => $product->discount,

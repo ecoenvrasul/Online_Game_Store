@@ -17,7 +17,7 @@ class ImageController extends Controller
             "images" => 'required'
         ]);
         if($validator->fails()){
-            return ResponseController::error($validator->errore()->first());
+            return ResponseController::error($validator->errors()->first());
         }
         $image_url = [];
         $images = $request->file('images');

@@ -66,7 +66,6 @@ class BasketPolicy
      */
     public function delete()
     {
-        return Auth::user()->role == 'admin';
     }
 
     /**

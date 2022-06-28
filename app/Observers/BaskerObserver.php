@@ -22,7 +22,7 @@ class BaskerObserver
         $user = $basket->user;
         $user->order = $basket->count;
         $user->update([
-            'but_game_number' => $user->order + 1,
+            'bought_game_number' => $user->order + 1,
         ]);
     }
 
@@ -45,7 +45,12 @@ class BaskerObserver
      */
     public function deleted(Basket $basket)
     {
-        //
+        /* Orderlarni hammasini delete qilgandan keyin, Basketni o'zi qandaydir bir soatdan keyin
+        avtomatik ravishda o'chadigan qilib ishlasa bo'lama? */
+
+        // if($basket->count == 0){
+        //     $basket->sleep()->delete(2);
+        // }
     }
 
     /**
